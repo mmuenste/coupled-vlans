@@ -20,15 +20,15 @@ except FileNotFoundError:
 for line in log:
     line = line.strip().split()
     if len(line) >= 3 and re.match('^[0-9a-f]{4,4}\.' +
-                                    '[0-9a-f]{4,4}\.[0-9a-f]{4,4}$',
-                                    line[2]):
+                                   '[0-9a-f]{4,4}\.[0-9a-f]{4,4}$',
+                                   line[2]):
         root_ids[line[0]] = {'priority': line[1],
-                            'mac': line[2],
-                            'root_cost': line[3],
-                            'hello_time': line[4],
-                            'max_age': line[5],
-                            'fwd_dly': line[6]
-                                }
+                             'mac': line[2],
+                             'root_cost': line[3],
+                             'hello_time': line[4],
+                             'max_age': line[5],
+                             'fwd_dly': line[6]
+                             }
         if len(line) == 8:
             root_ids[line[0]]['root_port'] = line[7]
         else:
