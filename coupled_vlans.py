@@ -1,5 +1,6 @@
 import argparse
 import re
+import sys
 
 parser = argparse.ArgumentParser()
 
@@ -10,23 +11,29 @@ args = parser.parse_args()
 root_ids = {}
 
 # Inhalt des Log-Files in Dictionary einlesen
-with open(args.log_file) as log:
-    for line in log:
-        line = line.strip().split()
-        if len(line) >= 3 and re.match('^[0-9a-f]{4,4}\.' +
-                                       '[0-9a-f]{4,4}\.[0-9a-f]{4,4}$',
-                                       line[2]):
-            root_ids[line[0]] = {'priority': line[1],
-                                 'mac': line[2],
-                                 'root_cost': line[3],
-                                 'hello_time': line[4],
-                                 'max_age': line[5],
-                                 'fwd_dly': line[6]
-                                 }
-            if len(line) == 8:
-                root_ids[line[0]]['root_port'] = line[7]
-            else:
-                root_ids[line[0]]['root_port'] = None
+try:
+    log = open(args.log_file)
+except FileNotFoundError:
+    print(f'File {args.log_file} not found!')
+    sys.exit()
+
+for line in log:
+    line = line.strip().split()
+    if len(line) >= 3 and re.match('^[0-9a-f]{4,4}\.' +
+                                    '[0-9a-f]{4,4}\.[0-9a-f]{4,4}$',
+                                    line[2]):
+        root_ids[line[0]] = {'priority': line[1],
+                            'mac': line[2],
+                            'root_cost': line[3],
+                            'hello_time': line[4],
+                            'max_age': line[5],
+                            'fwd_dly': line[6]
+                                }
+        if len(line) == 8:
+            root_ids[line[0]]['root_port'] = line[7]
+        else:
+            root_ids[line[0]]['root_port'] = None
+log.close()
 
 # mehrfach auftauchende Root IDs ermittlen:
 # Liste mit Root IDs erzeugen
