@@ -21,8 +21,8 @@ def main():
 
     for line in log:
         line = line.strip().split()
-        if len(line) >= 3 and re.match('^[0-9a-f]{4,4}\.' +
-                                       '[0-9a-f]{4,4}\.[0-9a-f]{4,4}$',
+        if len(line) >= 3 and re.match(r'^[0-9a-f]{4,4}\.' +
+                                       r'[0-9a-f]{4,4}\.[0-9a-f]{4,4}$',
                                        line[2]):
             root_ids[line[0]] = {'priority': line[1],
                                  'mac': line[2],
